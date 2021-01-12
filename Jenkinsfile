@@ -33,5 +33,10 @@ pipeline {
             deploy adapters: [tomcat9(credentialsId: '12b05b75-d511-4324-aded-cf9768391986', path: '', url: 'http://ec2-3-17-71-20.us-east-2.compute.amazonaws.com:9090')], contextPath: 'PWA', war: 'target/PersistentWebApp.war'
         }
         }
+		stage('Show http status')
+        {   steps{
+                sh ''' curl -I  http://localhost:9090 '''
+            }
+        }
     }
 }
