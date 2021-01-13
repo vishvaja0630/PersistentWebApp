@@ -11,12 +11,19 @@ pipeline {
             steps {
                 // Get some code from a GitHub repository
                 git 'https://github.com/vishvaja0630/PersistentWebApp.git'
+                
+                //Create version.html
+                sh 'touch src/main/webapp/version.html'
+                
+                //Output
+                sh 'echo "version1.0" > src/main/webapp/version.html'
 
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
                 // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                
             }
 
             post {
@@ -28,15 +35,18 @@ pipeline {
                 }
             }
         }
+        
         stage('Deploy')
         {   steps{
             deploy adapters: [tomcat9(credentialsId: '12b05b75-d511-4324-aded-cf9768391986', path: '', url: 'http://localhost:9090')], contextPath: 'PWA', war: 'target/PersistentWebApp.war'
+                  }
         }
-        }
-		stage('Show http status')
+        stage('Show http status')
         {   steps{
-                sh ''' curl -I  http://localhost:9090 '''
+                sh 'curl -I "http://localhost:9090/PWA/index.html" | grep HTTP | head -1'
+                sh 'curl -v "http://localhost:9090/PWA/version.html" | egrep \'HTTP|version\''
             }
         }
     }
 }
+
