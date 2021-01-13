@@ -44,7 +44,7 @@ pipeline {
         stage('Show http status')
         {   steps{
                 sh 'curl -I "http://localhost:9090/PWA/index.html" | grep HTTP | head -1'
-                sh 'curl -v "http://localhost:9090/PWA/version.html" | egrep \'HTTP|version\''
+                sh 'curl "http://localhost:9090/PWA/version.html"'
             }
         }
     }
