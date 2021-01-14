@@ -1,3 +1,3 @@
 FROM tomcat:latest
-COPY /PersistentWebAppWithDocker/target/*.war /usr/local/tomcat/webapps
+COPY /PersistentWebAppWithDocker/target/PersistentWebApp.war /usr/local/tomcat/webapps
 EXPOSE 8090
